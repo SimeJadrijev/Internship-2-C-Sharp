@@ -1,0 +1,8 @@
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\bin\Debug\Internship-2-C-Sharp.exe.config
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\bin\Debug\Internship-2-C-Sharp.exe
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\bin\Debug\Internship-2-C-Sharp.pdb
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\obj\Debug\Internship-2-C-Sharp.csproj.AssemblyReference.cache
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\obj\Debug\Internship-2-C-Sharp.csproj.SuggestedBindingRedirects.cache
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\obj\Debug\Internship-2-C-Sharp.csproj.CoreCompileInputs.cache
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\obj\Debug\Internship-2-C-Sharp.exe
+C:\Sime\Dump internship\C# - 2. predavanje\Internship-2-C-Sharp\Internship-2-C-Sharp\Internship-2-C-Sharp\obj\Debug\Internship-2-C-Sharp.pdb
