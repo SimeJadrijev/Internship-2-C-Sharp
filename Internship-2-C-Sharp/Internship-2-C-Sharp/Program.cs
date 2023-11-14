@@ -107,10 +107,16 @@ namespace Internship_2_C_Sharp
                     if (sigurnosnoPitanjeB == "da")
                     {
                         Console.WriteLine("Brisanje artikala kojima je istekao datum trajanja...");
-                        foreach (var item in artikli)
+                        var keysToRemove = new List<string>();
+
+                        foreach(var item in artikli)
                         {
                             if (item.Value.Item3 < DateTime.Now)
-                                artikli.Remove(item.Key);
+                                keysToRemove.Add(item.Key);
+                        }
+                        foreach(var key in keysToRemove)
+                        {
+                            artikli.Remove(key);
                         }
                     }
 
@@ -206,7 +212,7 @@ namespace Internship_2_C_Sharp
                                         break;
                                 }
                             }
-                    }
+                        }
                     }
                     
                     break;
@@ -301,68 +307,74 @@ namespace Internship_2_C_Sharp
                 {"sok", Tuple.Create(150, 2.5, new DateTime(2024,3,1) ) },
                 {"pivo", Tuple.Create(200, 4.0, new DateTime(2024,3,1) ) },
                 {"cokolada", Tuple.Create(25, 2.0, new DateTime(2026,6,1) ) },
-                {"sendvic", Tuple.Create(20, 2.0, new DateTime(2023,12,1) ) }
+                {"sendvic", Tuple.Create(20, 2.0, new DateTime(2023,12,1) ) },
+                {"sir", Tuple.Create(50, 2.0, new DateTime(2022,12,1) ) }
+
             };
 
             int odabirAkcije = PocetniIzbornik(); // Ispisivanje početnog izbornika i odabir akcije
-            switch (odabirAkcije)
+            while (odabirAkcije != 0)
             {
-                case 0:
-                    Environment.Exit(0);
-                    break;
-                case 1:
-                    int temp1 = ArtikliIzbornik();
-                    switch (temp1)
-                    {
-                        case 0:
-                            PocetniIzbornik();
-                            break;
-                        case 1:
-                            var rezultatUnosaArtikla = UnosArtikla();
-                            artikli.Add(rezultatUnosaArtikla.Item1, rezultatUnosaArtikla.Item2);
-
-                            Console.Write("Za povratak na početni izbornik, upišite 0");
-                            var upitnikZaPovratak = Console.ReadLine();
-                            if (upitnikZaPovratak == "0")
-                            {
+                switch (odabirAkcije)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        break;
+                    case 1:
+                        int temp1 = ArtikliIzbornik();
+                        switch (temp1)
+                        {
+                            case 0:
                                 PocetniIzbornik();
-                            }
-                            break;
-                        case 2:
-                            BrisanjeArtikla(artikli);
-                            Console.Write("Za povratak na početni izbornik, upišite 0");
+                                break;
+                            case 1:
+                                var rezultatUnosaArtikla = UnosArtikla();
+                                artikli.Add(rezultatUnosaArtikla.Item1, rezultatUnosaArtikla.Item2);
 
-                            var upitnikZaPovratak1 = Console.ReadLine();
-                            if (upitnikZaPovratak1 == "0")
-                            {
-                                PocetniIzbornik();
-                            }
-                            break;
-                        case 3:
-                            UređivanjeArtikla(artikli);
-                            Console.Write("Za povratak na početni izbornik, upišite 0");
+                                Console.Write("Za povratak na početni izbornik, upišite '0': ");
+                                var upitnikZaPovratak = Console.ReadLine();
+                                if (upitnikZaPovratak == "0")
+                                {
+                                    odabirAkcije = PocetniIzbornik();
+                                }
+                                break;
+                            case 2:
+                                BrisanjeArtikla(artikli);
+                                Console.Write("Za povratak na početni izbornik, upišite '0': ");
 
-                            var upitnikZaPovratak2 = Console.ReadLine();
-                            if (upitnikZaPovratak2 == "0")
-                            {
-                                PocetniIzbornik();
-                            }
-                            break;
+                                var upitnikZaPovratak1 = Console.ReadLine();
+                                if (upitnikZaPovratak1 == "0")
+                                {
+                                    odabirAkcije = PocetniIzbornik();
+                                }
+                                break;
+                            case 3:
+                                UređivanjeArtikla(artikli);
+                                Console.Write("Za povratak na početni izbornik, upišite '0': ");
 
-                    }
-                    break;
-                case 2:
-                    RadniciIzbornik();
-                    break;
-                case 3:
-                    RacuniIzbornik();
-                    break;
-                case 4:
-                    StatistikaIzbornik();
-                    break;
+                                var upitnikZaPovratak2 = Console.ReadLine();
+                                if (upitnikZaPovratak2 == "0")
+                                {
+                                    odabirAkcije = PocetniIzbornik();
+                                }
+                                break;
+
+                        }
+                        break;
+                    case 2:
+                        RadniciIzbornik();
+                        break;
+                    case 3:
+                        RacuniIzbornik();
+                        break;
+                    case 4:
+                        StatistikaIzbornik();
+                        break;
 
 
+                }
             }
+            
 
             foreach(var item in artikli)    //privremeni ispis
             {
