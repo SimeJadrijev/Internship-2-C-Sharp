@@ -150,78 +150,75 @@ namespace Internship_2_C_Sharp
                     var sigurnosnoPitanje = Console.ReadLine();
                     if (sigurnosnoPitanje == "da")
                     {
-                        foreach (var item in artikli) //greška !!!!
+                        if (artikli.ContainsKey(artiklZaUredivanje))
                         {
-                            if (item.Key == artiklZaUredivanje)
+                            var trenutniTuple = artikli[artiklZaUredivanje];
+                            switch (atributZaUredivanje)
                             {
-                                switch (atributZaUredivanje)
-                                {
-                                    case "1":
-                                        try
+                                case "1":
+                                    try
+                                    {
+                                        int intPromjena;
+                                        if (int.TryParse(promjena, out intPromjena) == true)
                                         {
-                                            int intPromjena;
-                                            if (int.TryParse(promjena, out intPromjena) == true)
-                                            {
-                                                var trenutniTuple = item.Value;
+                                            var noviTuple = Tuple.Create(intPromjena, trenutniTuple.Item2, trenutniTuple.Item3);
 
-                                                var noviTuple = Tuple.Create(intPromjena, trenutniTuple.Item2, trenutniTuple.Item3);
-
-                                                artikli[item.Key] = noviTuple;
-                                            }
+                                            artikli[artiklZaUredivanje] = noviTuple;
                                         }
-                                        catch
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Neispravan unos!");
+                                    }
+                                    break;
+                                case "2":
+                                    try
+                                    {
+                                        double doublePromjena;
+                                        if (double.TryParse(promjena, out doublePromjena) == true)
                                         {
-                                            Console.WriteLine("Neispravan unos!");
-                                        }                                     
-                                        break;
-                                    case "2":
-                                        try
-                                        {
-                                            double doublePromjena;
-                                            if(double.TryParse(promjena, out doublePromjena) == true)
-                                            {
-                                                var trenutiTuple = item.Value;
 
-                                                var noviTuple = Tuple.Create(trenutiTuple.Item1, doublePromjena, trenutiTuple.Item3);
+                                            var noviTuple = Tuple.Create(trenutniTuple.Item1, doublePromjena, trenutniTuple.Item3);
 
-                                                artikli[item.Key] = noviTuple;
-                                            }
+                                            artikli[artiklZaUredivanje] = noviTuple;
                                         }
-                                        catch
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Neispravan unos!");
+                                    }
+                                    break;
+                                case "3":
+                                    try
+                                    {
+                                        DateTime datumPromjena;
+                                        if (DateTime.TryParse(promjena, out datumPromjena) == true)
                                         {
-                                            Console.WriteLine("Neispravan unos!");
-                                        }
-                                        break;
-                                    case "3":
-                                        try
-                                        {
-                                            DateTime datumPromjena;
-                                            if (DateTime.TryParse(promjena, out datumPromjena) == true)
-                                            {
-                                                var trenutiTuple = item.Value;
+                                            var noviTuple = Tuple.Create(trenutniTuple.Item1, trenutniTuple.Item2, datumPromjena);
 
-                                                var noviTuple = Tuple.Create(trenutiTuple.Item1, trenutiTuple.Item2, datumPromjena);
-
-                                                artikli[item.Key] = noviTuple;
-                                            }
+                                            artikli[artiklZaUredivanje] = noviTuple;
                                         }
-                                        catch
-                                        {
-                                            Console.WriteLine("Neispravan unos!");
-                                        }
-                                        break;
-                                }
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Neispravan unos!");
+                                    }
+                                    break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Artikli s tim imenom ne postoji!");
                         }
                     }
                     
                     break;
-                case 'b':
+                case 'b':   //Ne radi. Iz nekog razloga se ne izvrsi try block.
                     Console.WriteLine("Odaberite: \n '1' - za popust na cijene \n '2' - za poskupljenje cijena");
                     var unos2 = Console.ReadLine();
                     if (unos2 == "1")
                     {
-                        Console.Write("Odaberite iznos popusta u postotku (1-100)");
+                        Console.Write("Odaberite iznos popusta u postotku (1-100): ");
                         var iznosPopusta = Console.ReadLine();
 
                         Console.WriteLine(("Ako ste sigurni da želite unijeti ovu promjenu, unesite 'da'."));
@@ -231,7 +228,7 @@ namespace Internship_2_C_Sharp
                             try
                             {
                                 double doublePopust;
-                                if (double.TryParse(iznosPopusta, out doublePopust))
+                                if (double.TryParse(iznosPopusta, out doublePopust) == true)
                                 {
                                     foreach (var item in artikli)
                                     {
@@ -252,8 +249,8 @@ namespace Internship_2_C_Sharp
                     }
                     else if (unos2 == "2")
                     {
-                        Console.Write("Odaberite iznos poskupljenja u postotku (1-100)");
-                        var iznosPopusta = Console.ReadLine();
+                        Console.Write("Odaberite iznos poskupljenja u postotku (1-100): ");
+                        var iznosPoskupljenja = Console.ReadLine();
 
                         Console.WriteLine(("Ako ste sigurni da želite unijeti ovu promjenu, unesite 'da'."));
                         var sigurnosnoPitanje2 = Console.ReadLine();
@@ -262,11 +259,11 @@ namespace Internship_2_C_Sharp
                             try
                             {
                                 double doublePoskupljenje;
-                                if (double.TryParse(iznosPopusta, out doublePoskupljenje))
+                                if (double.TryParse(iznosPoskupljenja, out doublePoskupljenje))
                                 {
                                     foreach (var item in artikli)
                                     {
-                                        doublePoskupljenje = (100 + doublePoskupljenje) / 100;
+                                        doublePoskupljenje = 1 + (doublePoskupljenje / 100);
                                         var trenutniTuple = item.Value;
                                         var novaCijena = item.Value.Item2 * doublePoskupljenje;
                                         var noviTuple = Tuple.Create(item.Value.Item1, novaCijena, item.Value.Item3);
@@ -279,9 +276,91 @@ namespace Internship_2_C_Sharp
                                 Console.WriteLine("Neispravan unos!");
                             }
                         }
-                        
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Neispravan unos! Unesite '1' ili '2'.");
                     }
 
+                    break;
+            }
+        }
+
+        //4.) Ispis artikala
+        static void IspisArtikala(Dictionary<string, Tuple<int, double, DateTime>> artikli)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Dobrodošli u sekciju za ispis artikala!");
+            Console.WriteLine("Odaberite koji ispis želite: \n \n 'a' - svi artikli kako su spremljeni \n 'b' - svi artikli sortirani po imenu \n 'c' - svi artikli sortirani po datumu silazno \n 'd' - svi artikli sortirani po datumu uzlazno \n 'e' - svi artikli sortirani po količini \n 'f' - najprodavaniji artikl \n 'g' - najmanje prodavan artikl ");
+            
+            var izborIspisa = Console.ReadLine();
+            switch (izborIspisa)
+            {
+                case "a":
+                    foreach (var item in artikli)
+                        Console.WriteLine(item);
+
+                    break;
+                case "b":
+                    string[] listaArtikalaPoImenu = new string[artikli.Count];
+                    int b = 0;
+                    foreach (var item in artikli)
+                    {
+                        listaArtikalaPoImenu[b] = item.Key;
+                        b++;
+                    }
+
+                    Array.Sort(listaArtikalaPoImenu);
+                    for (b = 0; b < artikli.Count; b++)
+                    Console.WriteLine(listaArtikalaPoImenu[b]);
+                    break;
+                case "c": //Dobro se sortiraju datumi, ali se onda izgubi poveznica s imenom artikla
+                    /*
+                    DateTime[] datumi2 = new DateTime[artikli.Count];
+                    int c = 0;
+                    foreach (var item in artikli)
+                    {
+                        datumi2[c] = item.Value.Item3;
+                        c++;
+                    }
+                    Array.Sort(datumi2);
+                    Array.Reverse(datumi2);
+                    c = 0;
+                    foreach (var item in artikli)
+                    {
+                        Console.WriteLine(item.Key + " " + datumi2[c]);
+                        c++;
+                    }
+                    */
+                    break;
+                case "d": //Dobro se sortiraju datumi, ali se onda izgubi poveznica s imenom artikla
+                    /*
+                    DateTime[] datumi = new DateTime[artikli.Count];
+                    int d = 0;
+                    foreach (var item in artikli)
+                    {
+                        datumi[d] = item.Value.Item3;
+                        d++;
+                    }
+                    Array.Sort(datumi);
+                    d = 0;
+                    foreach (var item in artikli)
+                    {
+                        Console.WriteLine(item.Key + " " + datumi[d]);
+                        d++;
+                    }
+                    break;
+                case "e":
+                    int[] kolicine = new int[artikli.Count];
+                    int e = 0;
+                    foreach(var item in artikli)
+                    {
+                        kolicine[e] = item.Value.Item1;
+                        e++;
+                    }
+                    Array.Sort(kolicine);
+                    */
                     break;
             }
         }
@@ -354,6 +433,16 @@ namespace Internship_2_C_Sharp
 
                                 var upitnikZaPovratak2 = Console.ReadLine();
                                 if (upitnikZaPovratak2 == "0")
+                                {
+                                    odabirAkcije = PocetniIzbornik();
+                                }
+                                break;
+                            case 4:
+                                IspisArtikala(artikli);
+                                Console.Write("Za povratak na početni izbornik, upišite '0': ");
+
+                                var upitnikZaPovratak3 = Console.ReadLine();
+                                if (upitnikZaPovratak3 == "0")
                                 {
                                     odabirAkcije = PocetniIzbornik();
                                 }
