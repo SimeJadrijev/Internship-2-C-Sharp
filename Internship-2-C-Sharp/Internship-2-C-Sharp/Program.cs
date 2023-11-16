@@ -298,11 +298,15 @@ namespace Internship_2_C_Sharp
             switch (izborIspisa)
             {
                 case "a":
+                    Console.WriteLine("Svi artikli ispisani kako su spremljeni: ");
+                    Console.WriteLine();
                     foreach (var item in artikli)
                         Console.WriteLine(item);
 
                     break;
                 case "b":
+                    Console.WriteLine("Svi artikli sortirani po imenu: ");
+                    Console.WriteLine();
                     string[] listaArtikalaPoImenu = new string[artikli.Count];
                     int b = 0;
                     foreach (var item in artikli)
@@ -333,6 +337,20 @@ namespace Internship_2_C_Sharp
                         c++;
                     }
                     */
+
+                    //Rješenje s interneta:
+                    Console.WriteLine("Svi artikli sortirani po datumu silazno: ");
+                    Console.WriteLine();
+
+                    List<KeyValuePair<string, Tuple<int, double, DateTime>>> listaArtikala1 = new List<KeyValuePair<string, Tuple<int, double, DateTime>>>(artikli);
+
+                    listaArtikala1.Sort((prvi, drugi) => -prvi.Value.Item3.CompareTo(drugi.Value.Item3));
+
+                    foreach (var item in listaArtikala1)
+                    {
+                        Console.WriteLine(item);
+                    }
+
                     break;
                 case "d": //Dobro se sortiraju datumi, ali se onda izgubi poveznica s imenom artikla
                     /*
@@ -361,6 +379,43 @@ namespace Internship_2_C_Sharp
                     }
                     Array.Sort(kolicine);
                     */
+                    Console.WriteLine("Svi artikli sortirani po datumu uzlazno: ");
+                    Console.WriteLine();
+
+                    List<KeyValuePair<string, Tuple<int, double, DateTime>>> listaArtikala = new List<KeyValuePair<string, Tuple<int, double, DateTime>>>(artikli);
+
+
+                    listaArtikala.Sort((prvi, drugi) => prvi.Value.Item3.CompareTo(drugi.Value.Item3));
+                    foreach (var item in listaArtikala)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                case "e":
+                    Console.WriteLine("Svi artikli sortirani po količini: ");
+                    Console.WriteLine();
+                    List<KeyValuePair<string,Tuple<int,double,DateTime>>> listaArtikala2 = new List<KeyValuePair<string,Tuple<int,double,DateTime>>>(artikli);
+
+                    listaArtikala2.Sort((prvi, drugi) => prvi.Value.Item1.CompareTo(drugi.Value.Item1));
+
+                    foreach (var item in listaArtikala2)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                case "f":
+                    Console.WriteLine("Najprodavaniji artikl: ");
+                    Console.WriteLine();
+
+                    //Potrebno dopuniti
+
+                    break;
+                case "g":
+                    Console.WriteLine("Najmanje prodavan artikl: ");
+                    Console.WriteLine();
+
+                    //Potrebno dopuniti
+
                     break;
             }
         }
