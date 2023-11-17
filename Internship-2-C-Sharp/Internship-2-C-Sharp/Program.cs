@@ -299,7 +299,7 @@ namespace Internship_2_C_Sharp
         }
 
         //4.) Ispis artikala
-        static void IspisArtikala(Dictionary<string, Tuple<int, double, DateTime>> artikli)
+        static void IspisArtikala(Dictionary<string, Tuple<int, double, DateTime>> artikli, Dictionary<string, int> najArtikli)
         {
             Console.WriteLine();
             Console.WriteLine("Dobrodošli u sekciju za ispis artikala!");
@@ -415,18 +415,44 @@ namespace Internship_2_C_Sharp
                     }
                     break;
                 case "f":
-                    Console.WriteLine("Najprodavaniji artikl: ");
+                    
                     Console.WriteLine();
 
-                    //Potrebno dopuniti
+                    void najprodavanijiArtikl()
+                    {
+                        Tuple<string, int> najprodavaniji = Tuple.Create("",0);
+                        foreach (var item in najArtikli)
+                        {
+                            if (item.Value > najprodavaniji.Item2)
+                                najprodavaniji = Tuple.Create(item.Key, item.Value);
+                        }
+                        if (najprodavaniji != Tuple.Create("", 0))
+                            Console.WriteLine($"Najprodavaniji artikl je: {najprodavaniji.Item1} ({najprodavaniji.Item2} puta) ");
+                        else
+                            Console.WriteLine("Nije prodan nijedan artikl.");
 
+                    }
+                    najprodavanijiArtikl();
                     break;
                 case "g":
                     Console.WriteLine("Najmanje prodavan artikl: ");
                     Console.WriteLine();
 
-                    //Potrebno dopuniti
+                    void najmanjeProdavanArtikl()
+                    {
+                        Tuple<string, int> najmanjeProdavan = Tuple.Create("", int.MaxValue);
+                        foreach (var item in najArtikli)
+                        {
+                            if (item.Value < najmanjeProdavan.Item2)
+                                najmanjeProdavan = Tuple.Create(item.Key, item.Value);
+                        }
+                        if (najmanjeProdavan != Tuple.Create("", int.MaxValue))
+                            Console.WriteLine($"Najprodavaniji artikl je: {najmanjeProdavan.Item1} ({najmanjeProdavan.Item2} puta) ");
+                        else
+                            Console.WriteLine("Nije prodan nijedan artikl.");
 
+                    }
+                    najmanjeProdavanArtikl();
                     break;
             }
         }
@@ -673,14 +699,22 @@ namespace Internship_2_C_Sharp
                     {
                         double cijenaProizvoda = artikli[item.Item1].Item2;
                         double ukupnaCijenaPojedinacnogProizvoda = kolicinaPojedinacnogProizvoda * cijenaProizvoda;
-                        var tupleZaUnos = Tuple.Create(item.Item1,kolicinaPojedinacnogProizvoda, ukupnaCijenaPojedinacnogProizvoda);
+                        var tupleZaUnos = Tuple.Create(item.Item1, kolicinaPojedinacnogProizvoda, ukupnaCijenaPojedinacnogProizvoda);
                         stavkeRacuna.Add(tupleZaUnos);
                     }
-                     
+
                 }
-
-                //Finalni ispis računa
-
+                 void statistikaProdavanihArtikala(List<Tuple<string, int, double>> stavke, Dictionary<string, int> najArtikli) //Za zadatak 1. pod 4.f)
+                {
+                    
+                    foreach(var item in stavke)
+                    {
+                        string ime = item.Item1;
+                        int vrijednost = item.Item2;
+                        najArtikli.Add(ime, vrijednost);
+                    }
+                    
+                }
 
                 return (idRacuna, vrijemeRacuna, stavkeRacuna);
 
@@ -736,30 +770,111 @@ namespace Internship_2_C_Sharp
                
             }
         }
-
-        static void StatistikaIzbornik()
+        // 4. - STATISTIKA
+        static int? StatistikaIzbornik()
         {
             var ispravnaSifra = "livaja";
             Console.WriteLine();
-            Console.Write("Dobrodošli u sekciju za statistiku. Pristup statistici imaju samo ovlašteni, stoga molimo da upišete ispravnu šifru: ");
+            Console.Write("Dobrodošli u sekciju za statistiku. (šifra: 'livaja')\nPristup statistici imaju samo ovlašteni, stoga molimo da upišete ispravnu šifru ('0' za povratak): ");
             var sifra = Console.ReadLine();
             if (sifra == ispravnaSifra)
             {
-                string statistikaIzbornik = "1 - Ukupan broj artikala u trgovini \n2 - Vrijednost artikala koji nisu još prodani \n3- Vrijednost svih artikala koji su prodani \n4- Stanje po mjesecima";
+                string statistikaIzbornik = "1 - Ukupan broj artikala u trgovini \n2 - Vrijednost artikala koji nisu još prodani \n3 - Vrijednost svih artikala koji su prodani \n4 - Stanje po mjesecima";
                 Console.WriteLine(statistikaIzbornik);
-            }
-            
-            int odabirAkcije = -1;
-            bool rezultat = false;
-            while (rezultat == false || odabirAkcije > 2 || odabirAkcije < 0)
+                int odabirAkcije = -1;
+                bool rezultat = false;
+                while (rezultat == false || odabirAkcije > 4 || odabirAkcije < 0)
+                {
+                    Console.Write("Odaberite jednu od ponuđenih opcija: ");
+                    rezultat = int.TryParse(Console.ReadLine(), out odabirAkcije);
+                }
+                return odabirAkcije;
+            } else if(sifra == "0")
             {
-                Console.Write("Odaberite jednu od ponuđenih opcija: ");
-                rezultat = int.TryParse(Console.ReadLine(), out odabirAkcije);
+                PocetniIzbornik();
             }
-            return odabirAkcije;
+            return null;         
         }
 
-            static void Main(string[] args)
+        // 1.) Ukupan broj artikala u trgovini
+        static void brojArtikala(Dictionary<string, Tuple<int, double, DateTime>> artikli)
+        {
+            var ukupanBrojArtikala = 0;
+            foreach (var item in artikli)
+            {
+                ukupanBrojArtikala += item.Value.Item1;
+            }
+            Console.WriteLine("Ukupan broj artikala je: " + ukupanBrojArtikala);
+        }
+
+        // 2.) Vrijednost artikala koji nisu još prodani
+        static void vrijednostNeProdanihArtikala(Dictionary<string, Tuple<int, double, DateTime>> artikli)
+        {
+            double rezultat = 0;
+            foreach(var item in artikli)
+            {
+                rezultat += item.Value.Item1 * item.Value.Item2;
+            }
+            Console.WriteLine("Ukupna vrijednost artikala koji još nisu prodani je: " + rezultat);
+
+        }
+
+        // 3.) Vrijednost artikala koji su prodani
+        static void vrijednostProdanihArtikala(Dictionary<int, Tuple<DateTime, List<Tuple<string, int, double>>>> racuni)
+        {
+            double rezultat = 0;
+            foreach (var racun in racuni)
+            {
+                foreach (var item in racun.Value.Item2)
+                {
+                    rezultat += item.Item3;
+                }
+            }
+            Console.WriteLine("Ukupna vrijednost prodanih artikala je: " + rezultat);
+        }
+
+        // 4.) Stanje po mjesecima  
+        static void stanjePoMjesecima(Dictionary<int, Tuple<DateTime, List<Tuple<string, int, double>>>> racuni)    //ne radi kako treba
+        {
+            bool rezultat = false; DateTime datum = DateTime.Now;
+            while (rezultat == false)
+            {
+                Console.Write("Unesite datum za mjesec koji vas zanima (godina, mjesec, dan): ");
+                rezultat = DateTime.TryParse(Console.ReadLine(), out datum);
+            }
+            
+            rezultat = false; double iznosPlaca = 0;
+            while(rezultat == false)
+            {
+                Console.Write("Unesite ukupni iznos plaća vaših zaposlenika: ");
+                rezultat = double.TryParse(Console.ReadLine(), out iznosPlaca);
+            }
+            rezultat = false; double ostaliTroskovi = 0;
+            while (rezultat == false)
+            {
+                Console.Write("Unesite ukupni iznos najma i svih ostalih troškova: ");
+                rezultat = double.TryParse(Console.ReadLine(), out ostaliTroskovi);
+            }
+            double ukupniPrihodi = 0;
+            foreach (var racun in racuni)
+            {
+                if(racun.Value.Item1.Year == datum.Year && racun.Value.Item1.Month == datum.Month)
+                {
+                    foreach (var item in racun.Value.Item2)
+                    {
+                        ukupniPrihodi += item.Item3;
+                    }
+                }         
+            }
+            var krajnjiRezultat = ukupniPrihodi * (1 / 3) - iznosPlaca - ostaliTroskovi;
+            if (krajnjiRezultat >= 0)
+                Console.WriteLine("Ukupna dobit trgovine za odabrani mjesec je: " + krajnjiRezultat);
+            else
+                Console.WriteLine("Ukupni gubitak trgovine za odabrani mjesec je: " + krajnjiRezultat);
+        }
+
+
+        static void Main(string[] args)
             {
                 //Kreiranje dictionaryja za artikle u kojem je ključ string, a vrijednost tuple (int, double i DateTime)
                 Dictionary<string, Tuple<int, double, DateTime>> artikli = new Dictionary<string, Tuple<int, double, DateTime>>()
@@ -789,11 +904,15 @@ namespace Internship_2_C_Sharp
             };
 
             Dictionary<int, Tuple<DateTime, List<Tuple<string, int, double>>>> racuni = new Dictionary<int, Tuple<DateTime, List<Tuple<string, int, double>>>>()
-                {
+            {
                 {1, Tuple.Create(new DateTime(2020,2,2) , stavkeRacuna) }
-                };
+            };
 
-                int odabirAkcije = PocetniIzbornik(); // Ispisivanje početnog izbornika i odabir akcije
+            Dictionary<string, int> najArtikli = new Dictionary<string, int>();
+
+
+
+            int odabirAkcije = PocetniIzbornik(); // Ispisivanje početnog izbornika i odabir akcije
                 while (odabirAkcije != 0)
                 {
                     switch (odabirAkcije)
@@ -939,7 +1058,53 @@ namespace Internship_2_C_Sharp
                             }
                             break;
                         case 4:
-                            StatistikaIzbornik();
+                            var temp4 = StatistikaIzbornik();
+                            if(temp4 != null)
+                            {
+                                switch (temp4)
+                                {
+                                    case 1:
+                                        brojArtikala(artikli);
+                                        Console.Write("Za povratak na početni izbornik, upišite '0': ");
+
+                                        var upitnikZaPovratak = Console.ReadLine();
+                                        if (upitnikZaPovratak == "0")
+                                        {
+                                            odabirAkcije = PocetniIzbornik();
+                                        }
+                                        break;
+                                    case 2:
+                                        vrijednostNeProdanihArtikala(artikli);
+                                        Console.Write("Za povratak na početni izbornik, upišite '0': ");
+
+                                        var upitnikZaPovratak1 = Console.ReadLine();
+                                        if (upitnikZaPovratak1 == "0")
+                                        {
+                                            odabirAkcije = PocetniIzbornik();
+                                        }
+                                        break;
+                                    case 3:
+                                        vrijednostProdanihArtikala(racuni);
+                                        Console.Write("Za povratak na početni izbornik, upišite '0': ");
+
+                                        var upitnikZaPovratak2 = Console.ReadLine();
+                                        if (upitnikZaPovratak2 == "0")
+                                        {
+                                            odabirAkcije = PocetniIzbornik();
+                                        }
+                                        break;
+                                    case 4:
+                                        stanjePoMjesecima(racuni);
+                                        Console.Write("Za povratak na početni izbornik, upišite '0': ");
+
+                                        var upitnikZaPovratak3 = Console.ReadLine();
+                                        if (upitnikZaPovratak3 == "0")
+                                        {
+                                            odabirAkcije = PocetniIzbornik();
+                                        }
+                                        break;
+                            }
+                            }
                             break;
 
 
