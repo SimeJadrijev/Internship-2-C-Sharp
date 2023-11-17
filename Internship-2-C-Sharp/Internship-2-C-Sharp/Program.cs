@@ -959,7 +959,7 @@ namespace Internship_2_C_Sharp
                                     }
                                     break;
                                 case 4:
-                                    IspisArtikala(artikli);
+                                    IspisArtikala(artikli,najArtikli);
                                     Console.Write("Za povratak na početni izbornik, upišite '0': ");
 
                                     var upitnikZaPovratak3 = Console.ReadLine();
